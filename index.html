@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>哈比列車圖鑑</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<button class="wiki-toggle" id="wikiToggle" type="button" hidden>圖鑑</button>
+<div class="panel" id="panel">
+<header class="top">
+  <div class="masthead">
+    <h1>哈比列車圖鑑<small>非官方</small></h1>
+    <button class="about-open" id="about" type="button">關於</button>
+    <button class="notes-open" id="notesOpen" type="button"><em class="notes-prefix">推理</em>筆記 <span id="notesCount">0</span></button>
+  </div>
+  <nav class="train" id="train" aria-label="資料分類"></nav>
+  <div class="filters">
+    <label class="search">
+      <span class="sr">搜尋</span>
+      <input id="search" type="search" placeholder="搜尋名稱或技能，例如：手銬" autocomplete="off">
+    </label>
+    <div class="factions" id="factions" role="group" aria-label="依陣營篩選"></div>
+  </div>
+</header>
+
+<main>
+  <p class="result-count" id="resultCount" aria-live="polite"></p>
+  <div class="tickets" id="tickets"></div>
+  <div class="empty" id="empty" hidden>
+    <p>找不到符合的項目。</p>
+    <button type="button" id="clearFilters">清除搜尋與篩選</button>
+  </div>
+</main>
+
+<dialog class="detail" id="detail" aria-labelledby="detailName"></dialog>
+<dialog class="notes" id="notes" aria-labelledby="notesTitle"></dialog>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

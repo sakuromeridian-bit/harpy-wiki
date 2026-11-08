@@ -1,0 +1,93 @@
+/* Twitch 擴充功能專用：圖鑑固定在一欄內，不用彈窗 */
+html, body { height: 100%; }
+html { background: transparent; }
+body { min-height: 0; background: transparent; overflow: hidden; font-size: 15px; }
+
+.panel {
+  container-type: inline-size;
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--brass-dim) var(--walnut-deep);
+  background:
+    repeating-linear-gradient(92deg, rgb(255 220 170 / .025) 0 2px, transparent 2px 9px, rgb(0 0 0 / .06) 9px 11px, transparent 11px 23px),
+    var(--walnut);
+}
+
+.top { position: static; padding: 8px 12px; }
+.masthead { gap: 6px; }
+h1 { font-size: 21px; letter-spacing: 0; white-space: nowrap; }
+.notes-prefix { display: none; }
+.about-open { padding: 4px 2px; }
+.notes-open { padding: 4px 8px; }
+.train { gap: 5px; margin-top: 6px; }
+.car { padding: 14px 0 3px; }
+.car b { font-size: 15px; }
+.car small { font-size: 12px; }
+.car + .car::after { left: -6px; width: 5px; }
+.filters { margin-top: 6px; gap: 6px; }
+.search { flex-basis: 100%; }
+.factions { flex-wrap: nowrap; overflow-x: auto; width: 100%; }
+.factions button { flex: none; padding: 2px 12px; }
+main { padding: 8px 12px 24px; }
+.tickets { grid-template-columns: 1fr; gap: 8px; }
+@container (max-width: 345px) { .car b { font-size: 13px; } h1 small { display: inline-block; margin-left: 4px; } }
+
+/* 用 fixed 而非 absolute：清單捲到下面時，詳情仍要出現在可見範圍 */
+dialog.detail, dialog.notes {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  scrollbar-color: var(--brass-dim) var(--walnut-deep);
+  margin: 0;
+  border-radius: 0;
+  overflow-y: auto;
+  z-index: 3;
+}
+dialog.detail[open] { animation: none; }
+
+/* 影片疊加層：左側中間的入口，打開時貼在欄位右緣；上下避開播放器控制列 */
+body[data-embed="overlay"] { --panel-w: clamp(320px, 40vw, 560px); }
+body[data-embed="overlay"] .panel {
+  position: fixed;
+  top: 56px;
+  bottom: 84px;
+  left: 0;
+  width: var(--panel-w);
+  height: auto;
+  border-right: 3px double var(--brass-dim);
+}
+body[data-embed="overlay"] dialog.detail, body[data-embed="overlay"] dialog.notes {
+  top: 56px;
+  right: auto;
+  bottom: 84px;
+  width: var(--panel-w);
+  height: auto;
+}
+.wiki-toggle {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  z-index: 4;
+  width: 40px;
+  min-height: 84px;
+  padding: 6px;
+  transform: translateY(-50%);
+  background: var(--brass);
+  color: var(--walnut-deep);
+  border: 0;
+  border-radius: 0 6px 6px 0;
+  font: 19px/1.25 var(--display);
+  writing-mode: vertical-rl;
+}
+body.is-open .wiki-toggle { left: var(--panel-w); }
+body[data-embed="mobile"] { background: var(--walnut); }
+
+/* 播放器很小時，上下只留控制列需要的空間 */
+@media (max-height: 460px) {
+  body[data-embed="overlay"] .panel, body[data-embed="overlay"] dialog.detail, body[data-embed="overlay"] dialog.notes { top: 12px; bottom: 52px; }
+}
